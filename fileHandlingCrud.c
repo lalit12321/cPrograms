@@ -21,12 +21,12 @@ int main(){
     int ch;
 
     while(ch!=7){
-        printf("\t-------------------------------------------------------\n");
-        printf("\t Welcome to student managment report\n");
+        printf("\t\n\n\n\n\n-------------------------------------------------------\n");
+        printf("\t\t Welcome to student managment report\n");
         printf("\t--------------------------------------------------------\n");
-        printf("----------------operations apply on file---------------\n");
+        printf("\t----------------operations apply on file---------------\n");
         printf("\t1. Insert student record\n\t2. Desplay Student Records\n\t3. Search Records\n\t4. Delete Records\n\t5. Shord Records\n\t6. Updata records\n\t7. Exit");
-        printf("\n Enter Your Choice: ");
+        printf("\n\t Enter Your Choice: ");
         scanf("%d",&ch);
         switch(ch){
             case 1: insert(); break;
@@ -51,20 +51,21 @@ void insert(){
     printf("\t-----privious store data------\n");
     display();
     printf("\t-----Enter New Student data------\n");
-    printf("Enter Roll Number: ");
+    printf("\tEnter Roll Number: ");
     scanf("%d",&s.roll);
-    printf("Enter Class Section: ");
-    fgets(s.sec);
-    printf("Enter Name: ");
-    fgets(s.name);
-    printf("Enter Markes: ");
+    getchar();
+    printf("\tEnter Class Section: ");
+    scanf("%c",&s.sec);
+    printf("\tEnter Name: ");
+    scanf("%s",s.name);
+    printf("\tEnter Markes: ");
     scanf("%d",&s.marks);
-    printf("Enter Grades: ");
+    printf("\tEnter Grades: ");
     scanf("%f",&s.grade);
-    fwrite(fp,sizeof(struct student),1,&s);
-    printf("\nstudent record entered successfully...!\n");
+    fwrite(&s,sizeof(struct student),1,fp);
+    printf("\n\tstudent record entered successfully...!\n");
     }
-    printf("Updated Records");
+    printf("\tUpdated Records");
     display();
     fclose(fp);
 }
@@ -72,13 +73,13 @@ void display(){
     FILE *fp;
     fp = fopen("student","rb");
     if(fp==NULL){
-        printf("ERROR: file not found");
+        printf("\tERROR: file not found");
         return;
     }else{
-    printf("-------Student Details----------\n");
+    printf("\t-------Student Details----------\n");
     printf("\tRoll no.\tName\tSection\tMarks\tGrade\n");
-    while(fread(fp,sizeof(struct student),1,&s)==1){
-        printf("\t%d\t%s\t%c\t%d\t%f\n",s.roll,s.name,s.sec,s.marks,s.grade);
+    while(fread(&s,sizeof(struct student),1,fp)==1){
+        printf("\t%d\t\t%s\t%c\t%d\t%f\n",s.roll,s.name,s.sec,s.marks,s.grade);
     }}
     fclose(fp);
 }
@@ -86,22 +87,22 @@ void  search(){
     FILE *fp;
     int ro, x=0;
     fp = fopen("student","rb");
-    printf("Enter Student roll number you want to search\n");
+    printf("\tEnter Student roll number you want to search\n");
     scanf("%d",&ro);
     if(fp==NULL){
-        printf("file not found\n");
+        printf("\tfile not found\n");
     }
-    while((fread(fp,sizeof(struct student),1,&s)>0) && (x=0)){
+    while((fread(&s,sizeof(struct student),1,fp)>0) && (x==0)){
         if(ro==s.roll){
             x=1;
-            printf("RECOURD found successfully .... !\n");
+            printf("\tRECOURD found successfully .... !\n");
             printf("\tRoll no.\tName\tSection\tMarks\tGrade\n");
             printf("\t%d\t%s\t%c\t%d\t%f\n",s.roll,s.name,s.sec,s.marks,s.grade);
         }
 
     }
     if(x==0)
-        printf("record not found :) ..!\n");
+        printf("\trecord not found :) ..!\n");
     
     fclose(fp);
 }
@@ -111,32 +112,32 @@ void delete(){
     unsigned x=0;
     fp = fopen("student","rb");
     if(fp==NULL){
-        printf("file not found..!");
+        printf("\tfile not found..!");
         return;
 
     }
-    printf("previous record...\n");
+    printf("\tprevious record...\n");
     display();
-    printf("Enter student name you want to delete: ");
+    printf("\tEnter student name you want to delete: ");
     scanf("%s",name);
     cp = fopen("stu1","ab+");
-    while(fread(fp,sizeof(struct student),1,&s)==1){
+    while(fread(&s,sizeof(struct student),1,fp)==1){
         if(strcmp(name,s.name)!=0){
-            printf("record deleted successfully......!");
-            fwrite(cp,sizeof(struct student),1,&s);
+            printf("\trecord deleted successfully......!");
+            fwrite(&s,sizeof(struct student),1,cp);
         }
         else{
             x=1;
         }
     }
     if(x==0){
-        printf("record not  found...!");
+        printf("\trecord not  found...!");
     }
     fclose(fp);
     fclose(cp);
     remove("student");
     rename("stu1","student");
-    printf("UPtated recourd");
+    printf("\tUPtated recourd");
     display();
 }
 
@@ -145,10 +146,10 @@ void shorts(){
     FILE *fp;
 fp = fopen("student","rb");
  if(fp==NULL){
-        printf("file not found\n");
+        printf("\tfile not found\n");
     }
     i=0;
-while(fread(fp,sizeof(a[i]),1,&a[i])==1){
+while(fread(&a[i],sizeof(a[i]),1,fp)==1){
     i++;k++;
 } 
 for(i=0; i<k;i++){
@@ -162,7 +163,7 @@ for(i=0; i<k;i++){
 }
 printf("\t After shorted details:\n");
 for(i=0; i<k; i++){
-    printf("\t%d\t%s\t%c\t%d\t%f",a[i].roll,a[i].name,a[i].sec,a[i].marks,a[i].grade);
+    printf("\n\t%d\t%s\t%c\t%d\t%f",a[i].roll,a[i].name,a[i].sec,a[i].marks,a[i].grade);
 }
 fclose(fp);
 }
@@ -171,36 +172,38 @@ void update(){
       FILE *fp;
     int ro, x=0;
     fp = fopen("student","rb+");
-    printf("Enter Student roll number you want to search\n");
+    printf("\tEnter Student roll number you want to search\n");
     scanf("%d",&ro);
     if(fp==NULL){
-        printf("file not found\n");
+        printf("\tfile not found\n");
     }else{
-    while((fread(fp,sizeof(struct student),1,&s)>0) && (x=0)){
+        fseek(fp,-sizeof(struct student),1);
+    while(fread(&s,sizeof(struct student),1,fp)>0 && x==0){
         if(ro==s.roll){
             x=1;
-            printf("RECOURD found successfully Now Doing update .... !\n");
+            printf("\tRECOURD found successfully Now Doing update .... !\n");
             printf("\tRoll no.\tName\tSection\tMarks\tGrade\n");
             printf("\t%d\t%s\t%c\t%d\t%f\n",s.roll,s.name,s.sec,s.marks,s.grade);
-            printf("\n---update recored-----");
-             printf("\nupdate Roll Number: ");
+            printf("\n\t---update recored-----");
+             printf("\t\nupdate Roll Number: ");
     scanf("%d",&s.roll);
-    printf("\nupdate Class Section: ");
+    getchar();
+    printf("\t\nupdate Class Section: ");
     scanf("%c",&s.sec);
-    printf("\nupdate Name: ");
+    printf("\t\nupdate Name: ");
     scanf("%s",s.name);
-    printf("\nupdate Markes: ");
+    printf("\t\nupdate Markes: ");
     scanf("%d",&s.marks);
-    printf("\nupdate Grades: ");
+    printf("\t\nupdate Grades: ");
     scanf("%f",&s.grade);
-    fseek(fp,sizeof(struct student),1);
-    fwrite(fp,sizeof(struct student),1,&s);
-    printf("\nupdate recored successfully...!\n");
+    
+    fwrite(&s,sizeof(struct student),1,fp);
+    printf("\t\nupdate recored successfully...!\n");
         }
 
     }}
     if(x==0){
-        printf("record not found :) ..!\n");
+        printf("\trecord not found :) ..!\n");
     }
     fclose(fp);
      
