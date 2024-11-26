@@ -61,7 +61,7 @@ void insert(){
     scanf("%d",&s.marks);
     printf("Enter Grades: ");
     scanf("%f",&s.grade);
-    fwrite(&s,sizeof(struct student),1,fp);
+    fwrite(fp,sizeof(struct student),1,&s);
     printf("\nstudent record entered successfully...!\n");
     }
     printf("Updated Records");
@@ -77,7 +77,7 @@ void display(){
     }else{
     printf("-------Student Details----------\n");
     printf("\tRoll no.\tName\tSection\tMarks\tGrade\n");
-    while(fread(&s,sizeof(struct student),1,fp)==1){
+    while(fread(fp,sizeof(struct student),1,&s)==1){
         printf("\t%d\t%s\t%c\t%d\t%f\n",s.roll,s.name,s.sec,s.marks,s.grade);
     }}
     fclose(fp);
@@ -91,7 +91,7 @@ void  search(){
     if(fp==NULL){
         printf("file not found\n");
     }
-    while((fread(&s,sizeof(struct student),1,fp)>0) && (x=0)){
+    while((fread(fp,sizeof(struct student),1,&s)>0) && (x=0)){
         if(ro==s.roll){
             x=1;
             printf("RECOURD found successfully .... !\n");
@@ -120,10 +120,10 @@ void delete(){
     printf("Enter student name you want to delete: ");
     scanf("%s",name);
     cp = fopen("stu1","ab+");
-    while(fread(&s,sizeof(struct student),1,fp)==1){
+    while(fread(fp,sizeof(struct student),1,&s)==1){
         if(strcmp(name,s.name)!=0){
             printf("record deleted successfully......!");
-            fwrite(&s,sizeof(struct student),1,cp);
+            fwrite(cp,sizeof(struct student),1,&s);
         }
         else{
             x=1;
@@ -148,7 +148,7 @@ fp = fopen("student","rb");
         printf("file not found\n");
     }
     i=0;
-while(fread(&a[i],sizeof(a[i]),1,fp)==1){
+while(fread(fp,sizeof(a[i]),1,&a[i])==1){
     i++;k++;
 } 
 for(i=0; i<k;i++){
@@ -176,7 +176,7 @@ void update(){
     if(fp==NULL){
         printf("file not found\n");
     }else{
-    while((fread(&s,sizeof(struct student),1,fp)>0) && (x=0)){
+    while((fread(fp,sizeof(struct student),1,&s)>0) && (x=0)){
         if(ro==s.roll){
             x=1;
             printf("RECOURD found successfully Now Doing update .... !\n");
@@ -194,7 +194,7 @@ void update(){
     printf("\nupdate Grades: ");
     scanf("%f",&s.grade);
     fseek(fp,sizeof(struct student),1);
-    fwrite(&s,sizeof(struct student),1,fp);
+    fwrite(fp,sizeof(struct student),1,&s);
     printf("\nupdate recored successfully...!\n");
         }
 
